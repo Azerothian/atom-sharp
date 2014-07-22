@@ -1,0 +1,11 @@
+# See https://atom.io/docs/latest/creating-a-package#menus for more details
+'context-menu':
+  '.overlayer':
+      'Enable atom-sharp': 'atom-sharp:toggle'
+
+'menu': [{
+  'label': 'Sharp'
+  'submenu': [
+    { 'label': 'Open Solution', 'command': 'atom-sharp:open:solution' }
+  ]
+}]
