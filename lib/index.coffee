@@ -3,7 +3,6 @@ remote = require "remote"
 dialog = remote.require "dialog"
 
 vsproj = require "vsproj"
-require("debug").enable("*")
 debug = require("debug")("atom-sharp:index")
 
 

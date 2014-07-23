@@ -12,10 +12,9 @@ class solutionView extends ReactView
     @reactComponent = solutionEditor
     super
   @content: ->
-    @div {}
+    @div {class: "atom-sharp"}
 
   initialize: (serializeState) ->
-    debug "init"
-    #@width(
+
   serialize: ->
     {}

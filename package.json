@@ -12,6 +12,7 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
+    "coffeemapper": "0.0.1",
     "debug": "^1.0.4",
     "envify": "^1.2.1",
     "react-atom-fork": "^0.10.0",
