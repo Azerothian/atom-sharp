@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 .DS_Store
 npm-debug.log
 =======
@@ -26,5 +26,4 @@ build/Release
 # Dependency directory
 # Deployed apps should consider commenting this line out:
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
->>>>>>> 7d697f9aeb4dd46ce2b78dc79250274b3fa58d42
 node_modules
