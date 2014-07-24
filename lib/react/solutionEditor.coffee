@@ -7,13 +7,13 @@ tree = require "./tree"
 debug =  require("debug")("atom-sharp:react:solutionEditor")
 {div, h3, button} = React.DOM
 
-serviceReferenceMap = {
+referenceMap = {
   "name": (src, resolve, reject) ->
-    debug "serviceReferenceMap.name", src
+    debug "referenceMap.name", src
     resolve(src.name)
   "icon": (src, resolve, reject) ->
-    debug "serviceReferenceMap.icon", src
-    resolve("glyphicon glyphicon-th")
+    debug "referenceMap.icon", src
+    resolve("")
 }
 
 cleanPath = (str) ->
@@ -32,11 +32,11 @@ projectMap = {
     if !src?
       return reject()
     data = []
-    return map(src.References, serviceReferenceMap).then (serviceReferences) ->
-      debug "projectMap.elements.serviceReferences", serviceReferences
+    return map(src.References, referenceMap).then (references) ->
+      debug "projectMap.elements.serviceReferences", references
       data.push {
-        name: "Service References"
-        elements: serviceReferences
+        name: "References"
+        elements: references
       }
       contentMap = {
         "name": (s, resolve, reject) ->
@@ -102,12 +102,15 @@ module.exports = React.createClass {
     @setState({ treeData: treeData })
 
   componentDidMount: ->
-    debug "props", @props
-    map(@props, solutionMap).then (treeData) =>
+    debug "props", @props.props
+    map(@props.props, solutionMap).then (treeData) =>
       json = JSON.parse(JSON.stringify(treeData[0]))
       debug "json", json
       #emitter.emit "treedata", treeData
       @onTreeData(json)
+  onCloseClick: ->
+    debug "calling destroy"
+    @props.onDestroy()
 
   render: ->
     debug "render", @state.treeData
@@ -115,6 +118,6 @@ module.exports = React.createClass {
       div { className: "btn-toolbar" },
         div { className: "btn-group" },
           button { type: "button", className: "btn btn-default"}, "Save"
-          button { type: "button", className: "btn btn-default"}, "Close"
+          button { type: "button", className: "btn btn-default", onClick: @onCloseClick }, "Close"
       tree @state.treeData
 }

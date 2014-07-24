@@ -12,7 +12,14 @@ class ReactView extends ScrollView
     return if @attached
     debug "is attached?"
     @attached = true
-    @component = React.renderComponent(@reactComponent(@reactProps), @element)
+
+    props = {
+      onDestroy: () =>
+        @destroy()
+      props: @reactProps
+    }
+
+    @component = React.renderComponent(@reactComponent(props), @element)
 
   beforeRemove: ->
     React.unmountComponentAtNode(@element)
