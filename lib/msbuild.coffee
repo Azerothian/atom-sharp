@@ -60,7 +60,8 @@ module.exports = class MsBuild
     args.push "/target:" + @options.targets
     args.push "/verbosity:" + @options.verbosity
     args.push "/nologo"  if @options.nologo
-    if @options.maxCpuCount
+    #xbuild does not support maxcpucount
+    if @options.maxCpuCount? and !(process.platform is "linux" or process.platform is "darwin")
       debug "Using maxcpucount:", + @options.maxCpuCount
       args.push "/maxcpucount:" + @options.maxCpuCount
     args.push "/property:Configuration=" + @options.projectConfiguration
