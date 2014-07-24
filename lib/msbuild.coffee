@@ -3,6 +3,9 @@ fs = require "fs"
 spawn = require('child_process').spawn
 Promise = require "bluebird"
 
+remote = require "remote"
+dialog = remote.require "dialog"
+
 debug = require("debug")("debug:atom-sharp:msbuild")
 info = require("debug")("info:atom-sharp:msbuild")
 fatal = require("debug")("fatal:atom-sharp:msbuild")
@@ -46,8 +49,20 @@ module.exports = class MsBuild
 
       command.on "close", (code) ->
         if code is 0
+          dialog.showMessageBox {
+            type: "info"
+            title: "Build is complete"
+            message: "Your build was successful"
+            buttons: ["Ok"]
+          }
           resolve()
         else
+          dialog.showMessageBox {
+            type: "warning"
+            title: "Build has failed"
+            message: "Build failed with code: #{code}, see the developers console for more information"
+            buttons: ["Ok"]
+          }
           fatal "MSBuild failed with code: #{code}"
           reject("MSBuild failed with code: #{code}")
 
