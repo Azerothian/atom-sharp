@@ -20,7 +20,7 @@ treeEntry = React.createClass {
     if @props.elements?
       element = ol { className: "entries list-tree" },
         @props.elements.map (element) ->
-          debug "element", element
+          #debug "element", element
           treeEntry(element)
     icon = "icon-file-directory"
     icon = @props.icon if @props.icon?
@@ -40,7 +40,7 @@ treeEntry = React.createClass {
     expand = false
     selected = false
     expand = true if @props.elements? and !@state.expanded
-    selected = true if !@state.selected
+    #selected = true if !@state.selected
 
     if !@props.elements?
       atom.workspaceView.open(@props.fullpath, true)

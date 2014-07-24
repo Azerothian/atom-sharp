@@ -1,10 +1,11 @@
 map = require "coffeemapper"
-
+{$} = require "atom"
 React = require 'react-atom-fork'
 util = require "util"
 path = require "path"
 tree = require "./tree"
-debug =  require("debug")("atom-sharp:react:solutionEditor")
+debug =  require("debug")("debug:atom-sharp:react:solutionEditor")
+msbuild = require "../msbuild"
 {div, h3, button} = React.DOM
 
 referenceMap = {
@@ -70,7 +71,7 @@ solutionMap = {
   "name": (src, resolve, reject) ->
     resolve(src.name)
   "elements": (src, resolve, reject) ->
-    debug "elemenets", src
+    debug "elements", src
     if src.Projects?
       if src.Projects.length > 0
         return map(src.Projects, projectMap).then (projectData) ->
@@ -92,12 +93,32 @@ module.exports = React.createClass {
   getInitialState: ->
     {
       treeData: {}
+      treeItemsHeight: "100%"
     }
+  calcHeight: () ->
+    totalHeight = $(".atom-sharp").height()
+    buttonHeight = $(".atom-sharp .btn-toolbar").height()
+    return totalHeight - buttonHeight
+
+  setHeights: () ->
+    newHeight = @calcHeight()
+    if newHeight < 0
+      debug "new height", newHeight, @state.treeItemsHeight
+    else if newHeight != @state.treeItemsHeight
+      debug "set bew height"
+      @setState({ treeItemsHeight: newHeight })
+
+  shouldComponentUpdate: (nextProps, nextState) ->
+    newHeight = @calcHeight()
+    debug "newHeight", newHeight, nextState.treeItemsHeight, nextState.treeItemsHeight != newHeight
+
+    return true# nextState.treeItemsHeight != @state.treeItemsHeight
+
+  componentDidUpdate: (prevProps, prevState) ->
+    @setHeights()
+
 
   onTreeData: (treeData) ->
-    debug "onTreeData", @
-    #@statics.funcTest()
-
     debug "setting state", treeData
     @setState({ treeData: treeData })
 
@@ -110,14 +131,37 @@ module.exports = React.createClass {
       @onTreeData(json)
   onCloseClick: ->
     debug "calling destroy"
-    @props.onDestroy()
+    @props.view.destroy()
 
   render: ->
     debug "render", @state.treeData
-    div { style: { width: "250px" } },
-      div { className: "btn-toolbar" },
+    div { className: "tool-panel panel-right"},
+      #div { className: "tree-view-resize-handle", ref: "resizeHandle" },
+      div { className: "btn-toolbar", ref: "toolBar" },
         div { className: "btn-group" },
-          button { type: "button", className: "btn btn-default"}, "Save"
+          #button { type: "button", className: "btn btn-default"}, "Save"
           button { type: "button", className: "btn btn-default", onClick: @onCloseClick }, "Close"
-      tree @state.treeData
+          button { type: "button", className: "btn btn-default", onClick: @build }, "Build"
+      div { className: "tree-view-resizer", ref: "treeItems", style: { height: @state.treeItemsHeight } },
+        div { className: "tree-view-scroller" },
+          tree @state.treeData
+
+
+  build: () ->
+    debug "start build", @props.props.file
+    msb = new msbuild({
+      src: @props.props.file
+      projectConfiguration: 'Debug'
+      targets: ["Build"]
+      stdout: true
+      version: 4.0
+      maxCpuCount: 8
+    })
+
+    msb.build().then () ->
+      debug "build successful"
+    , () ->
+      debug "build failed"
+
+
 }

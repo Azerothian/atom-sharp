@@ -13,6 +13,7 @@
     "atom": ">0.50.0"
   },
   "dependencies": {
+    "bluebird": "^2.2.2",
     "coffeemapper": "0.0.1",
     "debug": "^1.0.4",
     "envify": "^1.2.1",

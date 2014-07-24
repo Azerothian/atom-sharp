@@ -1,4 +1,4 @@
-{ScrollView} = require 'atom'
+{ScrollView, $} = require 'atom'
 React = require 'react-atom-fork'
 debug = require('debug')("atom-sharp:reactView")
 module.exports =
@@ -14,12 +14,16 @@ class ReactView extends ScrollView
     @attached = true
 
     props = {
-      onDestroy: () =>
-        @destroy()
+      view: @
       props: @reactProps
     }
 
     @component = React.renderComponent(@reactComponent(props), @element)
+    #TODO: figure out react resize event instead of hooking window?
+    $(window).resize () =>
+      debug "window resize"
+      @component.forceUpdate()
+      #@pollComponentDOM()
 
   beforeRemove: ->
     React.unmountComponentAtNode(@element)
@@ -33,11 +37,13 @@ class ReactView extends ScrollView
 
   hide: ->
     super
-    @pollComponentDOM()
+    #@component.forceUpdate()
+    #@pollComponentDOM()
 
   show: ->
     super
-    @pollComponentDOM()
+    @component.forceUpdate()
+    #@pollComponentDOM()
 
   pollComponentDOM: ->
     return unless @component?

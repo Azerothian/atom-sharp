@@ -6,9 +6,9 @@ paths = require "path"
 dialog = remote.require "dialog"
 
 d = require("debug")
-#d.enable("atom-sharp*")
+d.enable("*atom-sharp*")
 vsproj = require "vsproj"
-debug = d("atom-sharp:index")
+debug = d("debug:atom-sharp:index")
 
 
 solutionView = require "./solutionView"
@@ -53,7 +53,9 @@ module.exports =
       found = $(".tree-view .selected > span")
       if found.length > 0
         debug "found", found[0].attributes["data-path"].value
-        path = found[0].attributes["data-path"].value
+        filePath = found[0].attributes["data-path"].value
+        path = paths.resolve(atom.project.path, filePath)
+
         if path?
           if paths.extname(path) is ".sln"
             return @openSln(path)
