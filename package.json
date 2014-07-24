@@ -1,7 +1,7 @@
 {
   "name": "atom-sharp",
   "main": "./lib/index",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Visual Studio solution and project editor for atom editor",
   "activationEvents": [
     "atom-sharp:open:solution:browse",
