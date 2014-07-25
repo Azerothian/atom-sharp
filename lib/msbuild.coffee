@@ -92,6 +92,7 @@ module.exports = class MsBuild
     # temp mono xbuild usage for linux / osx - assumes xbuild is in the path, works on my machine...
     return "xbuild" if process.platform is "linux" or process.platform is "darwin"
     version = @options.version
+
     unless version
       msBuild12x86Path = "C:\\Program Files (x86)\\MSBuild\\12.0\\Bin\\MSBuild.exe"
       msBuild12x64Path = "C:\\Program Files\\MSBuild\\12.0\\Bin\\MSBuild.exe"

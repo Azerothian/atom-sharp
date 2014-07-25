@@ -154,7 +154,6 @@ module.exports = React.createClass {
       projectConfiguration: 'Debug'
       targets: ["Build"]
       stdout: true
-      version: 4.0
       maxCpuCount: 8
     })
 
