@@ -1,6 +1,6 @@
 {ScrollView, $} = require 'atom'
 React = require 'react-atom-fork'
-debug = require('debug')("atom-sharp:reactView")
+debug = require('debug')("debug:atom-sharp:reactView")
 module.exports =
 class ReactView extends ScrollView
   # Tear down any state and detach
@@ -38,16 +38,7 @@ class ReactView extends ScrollView
   hide: ->
     super
     #@component.forceUpdate()
-    #@pollComponentDOM()
 
   show: ->
     super
     @component.forceUpdate()
-    #@pollComponentDOM()
-
-  pollComponentDOM: ->
-    return unless @component?
-    valueToRestore = @component.performSyncUpdates
-    @component.performSyncUpdates = true
-    @component.pollDOM()
-    @component.performSyncUpdates = valueToRestore
