@@ -3,7 +3,7 @@
   "main": "./lib/index",
   "version": "0.1.0",
   "description": "Visual Studio solution and project editor for atom editor",
-  "activationEvents": [
+  "activationCommands": [
     "atom-sharp:open:solution:browse",
     "atom-sharp:open:solution:tree"
   ],
